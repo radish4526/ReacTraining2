@@ -1,14 +1,15 @@
+import { Button, Typography } from '@mui/material';
 import './App.css';
 import { useState } from 'react';
 
 function App() {
-  const num = () => Math.floor(Math.random() * 10);
   const [rand, setRand] = useState([Array(3).fill(null)]);
+  const num = () => Math.floor(Math.random() * 10);
 
   return (
     <div className="App">
-      <button onClick={() => setRand(num())}>乱数</button>
-      <p>{rand}</p>
+      <Button variant='contained' onClick={() => setRand([num(), num(), num()])}>3つの数字</Button>
+      <Typography variant='h5'>{rand}</Typography>
     </div>
   );
 }
