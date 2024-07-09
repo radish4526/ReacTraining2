@@ -1,5 +1,3 @@
-// src/App.js
-
 import React, { useState } from 'react';
 import './App.css';
 
@@ -26,8 +24,8 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (guess.length !== 4 || new Set(guess).size !== 4) {
-      setMessage("Enter a 4-digit number with unique digits.");
+    if (guess.length !== 4 || new Set(guess).size !== 4) { // 入力した数字が4桁の異なる数字か判定
+      alert("4桁の異なる数字を入力してください。");
       return;
     }
 
@@ -47,25 +45,34 @@ const App = () => {
     setGuess("");
 
     if (hits === 4) {
-      setMessage("Congratulations! You've guessed the correct number.");
+      setMessage("正解!!!");
     } else {
       setMessage(`${hits} Hits, ${blows} Blows`);
     }
   };
 
+  const handleRemove = () => {
+    const newHistory = [];
+    const newmessage = "";
+    setHistory(newHistory);
+    setMessage(newmessage);
+    setAnswer(generateAnswer());
+  }
+
   return (
     <div className="App">
-      <h1>Hit & Blow Game</h1>
+      <h1>Hit & Blow</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" value={guess} onChange={handleChange} maxLength="4" />
-        <button type="submit">Guess</button>
+        <button type="submit">推測</button>
+        <button type='button' onClick={() => handleRemove()}>やり直し</button>
       </form>
       <p>{message}</p>
-      <h2>History</h2>
+      <h2>履歴</h2>
       <ul>
         {history.map((item, index) => (
           <li key={index}>
-            Guess: {item.guess}, Hits: {item.hits}, Blows: {item.blows}
+            推測: {item.guess}, Hits: {item.hits}, Blows: {item.blows}
           </li>
         ))}
       </ul>
