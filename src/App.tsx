@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 const generateAnswer = () => {
-  const numbers = [];
+  const numbers: number[] = [];
   while (numbers.length < 4) {
     const num = Math.floor(Math.random() * 10);
     if (!numbers.includes(num)) {
@@ -14,17 +14,18 @@ const generateAnswer = () => {
 
 const App = () => {
   const [answer, setAnswer] = useState(generateAnswer());
-  const [guess, setGuess] = useState("");
-  const [history, setHistory] = useState([]);
-  const [message, setMessage] = useState("");
+  const [guess, setGuess] = useState<string>("");
+  const [history, setHistory] = useState<HitBlowObject[]>([]);
+  const [message, setMessage] = useState<string>("");
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGuess(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (guess.length !== 4 || new Set(guess).size !== 4) { // 入力した数字が4桁の異なる数字か判定
+    // 入力した数字が4桁の異なる数字か判定
+    if (guess.length !== 4 || new Set(guess).size !== 4) { 
       alert("4桁の異なる数字を入力してください。");
       return;
     }
@@ -52,18 +53,24 @@ const App = () => {
   };
 
   const handleRemove = () => {
-    const newHistory = [];
+    const newHistory: HitBlowObject[] = [];
     const newmessage = "";
     setHistory(newHistory);
     setMessage(newmessage);
     setAnswer(generateAnswer());
   }
 
+  interface HitBlowObject {
+    guess: string;
+    hits: number;
+    blows: number;
+  }
+
   return (
     <div className="App">
       <h1>Hit & Blow</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" value={guess} onChange={handleChange} maxLength="4" />
+        <input type="text" value={guess} onChange={handleChange} maxLength={4} />
         <button type="submit">推測</button>
         <button type='button' onClick={() => handleRemove()}>やり直し</button>
       </form>
