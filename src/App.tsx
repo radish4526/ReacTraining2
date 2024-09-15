@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import {
+  Box,
+  Button,
+  FormControl,
+  List,
+  ListItem,
+  TextField,
+  Typography,
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
 
 const generateAnswer = () => {
   const numbers: number[] = [];
@@ -25,7 +36,7 @@ const App = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // 入力した数字が4桁の異なる数字か判定
-    if (guess.length !== 4 || new Set(guess).size !== 4) { 
+    if (guess.length !== 4 || new Set(guess).size !== 4) {
       alert("4桁の異なる数字を入力してください。");
       return;
     }
@@ -54,11 +65,11 @@ const App = () => {
 
   const handleRemove = () => {
     const newHistory: HitBlowObject[] = [];
-    const newmessage = "";
+    const newmessage: string = "";
     setHistory(newHistory);
     setMessage(newmessage);
     setAnswer(generateAnswer());
-  }
+  };
 
   interface HitBlowObject {
     guess: string;
@@ -67,23 +78,70 @@ const App = () => {
   }
 
   return (
-    <div className="App">
-      <h1>Hit & Blow</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={guess} onChange={handleChange} maxLength={4} />
-        <button type="submit">推測</button>
-        <button type='button' onClick={() => handleRemove()}>やり直し</button>
-      </form>
-      <p>{message}</p>
-      <h2>履歴</h2>
-      <ul>
-        {history.map((item, index) => (
-          <li key={index}>
-            推測: {item.guess}, Hits: {item.hits}, Blows: {item.blows}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Box display="flex" justifyContent="center">
+      <Box>
+        <Typography textAlign="center" variant="h3" mt={15}>
+          Hit & Blow
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <FormControl>
+            <Box display="flex" justifyContent="center" mt={4}>
+              <Box mr={6}>
+                <TextField
+                  required
+                  label="4桁の異なる数字"
+                  variant="outlined"
+                  type="text"
+                  value={guess}
+                  onChange={handleChange}
+                />
+              </Box>
+              <Box display="flex" alignItems="center">
+                <Box mr={1}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="secondary"
+                    startIcon={<PsychologyAltIcon />}
+                  >
+                    推測
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleRemove()}
+                  >
+                    やり直し
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </FormControl>
+        </form>
+        <Box mt={3}>
+          <Typography variant="h6" textAlign="center">
+            {message}
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="h5">履歴</Typography>
+          <Box height={250} overflow="scroll">
+            <List>
+              {history.map((item, index) => (
+                <ListItem key={index}>
+                  {index + 1}回目　推測：{item.guess}　Hits：{item.hits}
+                  　Blows：
+                  {item.blows}
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
